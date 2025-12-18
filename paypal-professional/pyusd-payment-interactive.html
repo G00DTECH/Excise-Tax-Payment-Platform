@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PYUSD Payment - Interactive Portal v2.1</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <!-- External Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+    <link rel="stylesheet" href="https://unpkg.com/tippy.js@6/dist/tippy.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #F8F9FA;
+            color: #333333;
+            line-height: 1.5;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: #003087;
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 24px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            padding: 32px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border: 1px solid #DEE2E6;
+        }
+
+        .card-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #003087;
+            margin-bottom: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333333;
+            font-size: 14px;
+        }
+
+        .form-label .required {
+            color: #DC3545;
+        }
+
+        .form-input,
+        .form-select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #DEE2E6;
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .form-input:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: #0070BA;
+            box-shadow: 0 0 0 3px rgba(0,112,186,0.1);
+        }
+
+        .form-input.error {
+            border-color: #DC3545;
+        }
+
+        .error-message {
+            color: #DC3545;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #F1F3F4;
+        }
+
+        .summary-row:last-child {
+            border-bottom: none;
+        }
+
+        .summary-row.total {
+            font-weight: 700;
+            font-size: 18px;
+            color: #003087;
+            padding-top: 16px;
+            margin-top: 8px;
+            border-top: 2px solid #003087;
+        }
+
+        .summary-label {
+            color: #6C757D;
+        }
+
+        .summary-value {
+            color: #333333;
+            font-weight: 600;
+        }
+
+        .info-box {
+            background: #E7F3FF;
+            border: 1px solid #0070BA;
+            border-radius: 6px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .info-box svg {
+            width: 16px;
+            height: 16px;
+            stroke: #0070BA;
+            margin-right: 8px;
+        }
+
+        .payment-methods {
+            margin-top: 24px;
+        }
+
+        .payment-option {
+            border: 2px solid #DEE2E6;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .payment-option:hover {
+            border-color: #0070BA;
+        }
+
+        .payment-option.selected {
+            border-color: #0070BA;
+            background: #F0F8FF;
+        }
+
+        .payment-option-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .payment-radio {
+            width: 20px;
+            height: 20px;
+        }
+
+        .payment-name {
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .payment-description {
+            font-size: 14px;
+            color: #6C757D;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: auto;
+        }
+
+        .badge.recommended {
+            background: #28A745;
+            color: white;
+        }
+
+        .badge.instant {
+            background: #0070BA;
+            color: white;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: #0070BA;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #005ea6;
+            transform: translateY(-1px);
+        }
+
+        .btn-primary:disabled {
+            background: #6C757D;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #0070BA;
+            border: 2px solid #0070BA;
+        }
+
+        .btn-secondary:hover {
+            background: #F0F8FF;
+        }
+
+        .btn-full {
+            width: 100%;
+        }
+
+        .rate-lock-timer {
+            background: #FFF9E6;
+            border: 1px solid #FFE07F;
+            border-radius: 6px;
+            padding: 16px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .timer-display {
+            font-size: 32px;
+            font-weight: 700;
+            color: #856404;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .timer-label {
+            font-size: 14px;
+            color: #856404;
+            margin-top: 4px;
+        }
+
+        .qr-code-container {
+            text-align: center;
+            padding: 24px;
+            background: white;
+            border-radius: 8px;
+            border: 2px dashed #DEE2E6;
+            margin: 20px 0;
+        }
+
+        #qrcode {
+            display: inline-block;
+        }
+
+        .progress-container {
+            margin: 32px 0;
+        }
+
+        .progress-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .progress-step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+        }
+
+        .progress-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            width: 100%;
+            height: 2px;
+            background: #DEE2E6;
+            z-index: -1;
+        }
+
+        .progress-step.active::after,
+        .progress-step.completed::after {
+            background: #0070BA;
+        }
+
+        .step-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #DEE2E6;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .progress-step.active .step-icon {
+            background: #0070BA;
+            color: white;
+        }
+
+        .progress-step.completed .step-icon {
+            background: #28A745;
+            color: white;
+        }
+
+        .step-label {
+            font-size: 12px;
+            color: #6C757D;
+        }
+
+        .progress-step.active .step-label {
+            color: #0070BA;
+            font-weight: 600;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 8px;
+            padding: 32px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #003087;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #6C757D;
+        }
+
+        .funding-options {
+            display: grid;
+            gap: 12px;
+        }
+
+        .funding-option {
+            border: 2px solid #DEE2E6;
+            border-radius: 8px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .funding-option:hover {
+            border-color: #0070BA;
+            background: #F0F8FF;
+        }
+
+        .funding-details {
+            flex: 1;
+        }
+
+        .funding-name {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .funding-meta {
+            font-size: 12px;
+            color: #6C757D;
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #28A745;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+        }
+
+        .success-icon svg {
+            width: 48px;
+            height: 48px;
+            stroke: white;
+        }
+
+        .tooltip-trigger {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            cursor: help;
+            color: #0070BA;
+            font-weight: 500;
+        }
+
+        .tooltip-trigger svg {
+            width: 18px;
+            height: 18px;
+            stroke: #0070BA;
+            fill: none;
+            transition: all 0.2s ease;
+        }
+
+        .tooltip-trigger:hover svg {
+            stroke: #005ea6;
+            transform: scale(1.1);
+        }
+
+        .help-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #E7F3FF;
+            color: #0070BA;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: help;
+            margin-left: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .help-icon:hover {
+            background: #0070BA;
+            color: white;
+            transform: scale(1.15);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .progress-steps {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .progress-step::after {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">State Excise Tax Portal v2.1</div>
+            <a href="index.html" style="color: white; text-decoration: none; font-size: 14px;">← Home</a>
+        </div>
+    </header>
+
+    <!-- Main Application -->
+    <div x-data="paymentApp()" x-cloak>
+        <div class="container">
+
+            <!-- Step 1: Payment Form -->
+            <div x-show="currentStep === 'form'">
+                <div class="card">
+                    <h1 class="card-title">Interactive PYUSD Payment Portal</h1>
+
+                    <div class="info-box">
+                        <div style="display: flex; align-items: start;">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="16" x2="12" y2="12"></line>
+                                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                            </svg>
+                            <div>
+                                <strong>v2.1 Interactive Demo</strong><br>
+                                All calculations and validations are live. Based on provisional patent specifications for tri-tier distributed ledger settlement.
+                            </div>
+                        </div>
+                    </div>
+
+                    <form @submit.prevent="submitPayment">
+                        <!-- Base Amount -->
+                        <div class="form-group">
+                            <label class="form-label">
+                                Base Excise Amount <span class="required">*</span>
+                                <span class="help-icon" data-tippy-content="Enter the total excise tax amount due. Valid range: $0.01 to $1,000,000. This amount will be used to calculate late fees and total payment.">?</span>
+                            </label>
+                            <input
+                                type="number"
+                                class="form-input"
+                                x-model.number="formData.baseAmount"
+                                @blur="calculateTotal"
+                                min="0.01"
+                                max="1000000"
+                                step="0.01"
+                                required>
+                            <div x-show="errors.baseAmount" class="error-message" x-text="errors.baseAmount"></div>
+                        </div>
+
+                        <!-- Tax Type and Period -->
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">
+                                    Tax Type <span class="required">*</span>
+                                    <span class="help-icon" data-tippy-content="Select the type of excise tax you're paying. Different types use different measurement units (gallons for beer, liters for wine, proof gallons for spirits).">?</span>
+                                </label>
+                                <select class="form-select" x-model="formData.taxType" required>
+                                    <option value="beer">Beer (gallons)</option>
+                                    <option value="wine">Wine (liters)</option>
+                                    <option value="spirits">Spirits (proof gallons)</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">
+                                    Tax Period <span class="required">*</span>
+                                    <span class="help-icon" data-tippy-content="Select the quarter for which you're paying excise tax. The due date will automatically calculate as the period end date plus 30 days.">?</span>
+                                </label>
+                                <select class="form-select" x-model="formData.period" @change="calculateDueDate" required>
+                                    <option value="2025-Q4">Q4 2025</option>
+                                    <option value="2025-Q3">Q3 2025</option>
+                                    <option value="2025-Q2">Q2 2025</option>
+                                    <option value="2025-Q1">Q1 2025</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Reference ID and Due Date -->
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">
+                                    Permit Reference ID <span class="required">*</span>
+                                    <span class="help-icon" data-tippy-content="Your permit or license reference number. This will be embedded as a Stellar memo for tracking. Must be alphanumeric, minimum 10 characters.">?</span>
+                                </label>
+                                <input
+                                    type="text"
+                                    class="form-input"
+                                    x-model="formData.referenceId"
+                                    placeholder="PERM-12345"
+                                    minlength="10"
+                                    pattern="[A-Za-z0-9\-]+"
+                                    required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">
+                                    Due Date
+                                    <span class="help-icon" data-tippy-content="Automatically calculated as the tax period end date plus 30 days. Used to determine if late fees apply.">?</span>
+                                </label>
+                                <input
+                                    type="text"
+                                    class="form-input"
+                                    x-model="formData.dueDate"
+                                    readonly>
+                            </div>
+                        </div>
+
+                        <!-- Fee Breakdown -->
+                        <div class="card" style="background: #F8F9FA;">
+                            <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 16px;">Fee Breakdown</h3>
+
+                            <div class="summary-row">
+                                <span class="summary-label">Base Amount</span>
+                                <span class="summary-value" x-text="'$' + formData.baseAmount.toFixed(2)"></span>
+                            </div>
+
+                            <div class="summary-row">
+                                <span class="summary-label">
+                                    Late Fee (1.5% per month)
+                                    <span class="help-icon" data-tippy-content="Per Appendix C: 1.5% monthly penalty for overdue payments. Calculated based on months past the due date.">?</span>
+                                </span>
+                                <span class="summary-value" x-text="'$' + calculations.lateFee.toFixed(2)"></span>
+                            </div>
+
+                            <div class="summary-row">
+                                <span class="summary-label">
+                                    Portal Service Fee
+                                    <span class="help-icon" data-tippy-content="Fixed fee for using the State Excise Tax Portal. This covers processing, validation, and record-keeping services.">?</span>
+                                </span>
+                                <span class="summary-value">$0.50</span>
+                            </div>
+
+                            <div class="summary-row total">
+                                <span class="summary-label">Total PYUSD Due</span>
+                                <span class="summary-value" x-text="'$' + calculations.totalAmount.toFixed(2)"></span>
+                            </div>
+                        </div>
+
+                        <!-- Payment Method Selection -->
+                        <div class="payment-methods">
+                            <h3 class="form-label">
+                                Select Payment Method
+                                <span class="help-icon" data-tippy-content="Choose how you want to pay your excise tax. PYUSD offers instant settlement with minimal fees, while ACH is a traditional bank transfer option.">?</span>
+                            </h3>
+
+                            <div class="payment-option"
+                                 :class="{ 'selected': formData.paymentMethod === 'pyusd' }"
+                                 @click="formData.paymentMethod = 'pyusd'">
+                                <div class="payment-option-header">
+                                    <input type="radio" name="paymentMethod" value="pyusd" x-model="formData.paymentMethod" class="payment-radio">
+                                    <div style="flex: 1;">
+                                        <div class="payment-name">
+                                            PayPal USD (PYUSD)
+                                            <span class="help-icon" data-tippy-content="PayPal USD is a stablecoin (1:1 USD) that settles on the Stellar blockchain in ~3 seconds. You save up to $299.95 vs traditional payment methods.">?</span>
+                                        </div>
+                                        <div class="payment-description">Instant settlement (3.2 seconds) - $0.05 transaction fee</div>
+                                    </div>
+                                    <span class="badge recommended">Recommended</span>
+                                    <span class="badge instant">Instant</span>
+                                </div>
+                            </div>
+
+                            <div class="payment-option"
+                                 :class="{ 'selected': formData.paymentMethod === 'ach' }"
+                                 @click="formData.paymentMethod = 'ach'">
+                                <div class="payment-option-header">
+                                    <input type="radio" name="paymentMethod" value="ach" x-model="formData.paymentMethod" class="payment-radio">
+                                    <div style="flex: 1;">
+                                        <div class="payment-name">
+                                            ACH Bank Transfer
+                                            <span class="help-icon" data-tippy-content="Traditional bank transfer. Takes 3-5 business days to clear but has no additional processing fees beyond the $0.50 portal fee.">?</span>
+                                        </div>
+                                        <div class="payment-description">3-5 business days - No additional fee</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-full" style="margin-top: 24px;">
+                            Continue to Payment
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Step 2: PYUSD Processing -->
+            <div x-show="currentStep === 'processing'">
+                <div class="card">
+                    <h2 class="card-title">Processing PYUSD Payment</h2>
+
+                    <!-- Rate Lock Timer -->
+                    <div class="rate-lock-timer">
+                        <div class="timer-display" x-text="formatTime(rateLockTimer)"></div>
+                        <div class="timer-label">
+                            Rate locked at 1:1 USD (PYUSD stablecoin - no oracle needed)
+                            <span class="help-icon" data-tippy-content="Your exchange rate is locked for 15 minutes. PYUSD maintains a 1:1 peg with USD, so no price oracle is needed for stablecoin payments." style="background: rgba(255,255,255,0.3); color: #856404;">?</span>
+                        </div>
+                    </div>
+
+                    <!-- Tri-Tier Progress -->
+                    <div class="progress-container">
+                        <div class="progress-steps">
+                            <div class="progress-step" :class="{ 'active': processingStage >= 1, 'completed': processingStage > 1 }">
+                                <div class="step-icon">
+                                    <span x-show="processingStage > 1">✓</span>
+                                    <span x-show="processingStage <= 1">1</span>
+                                </div>
+                                <div class="step-label">
+                                    Layer 1: Rapid Approval
+                                    <span class="help-icon" data-tippy-content="Pre-blockchain compliance check. Verifies identity and sanctions via PayPal API, locks exchange rate. Sub-second confirmation without volatility - solves the patent problem of instant approval before blockchain settlement.">?</span>
+                                </div>
+                            </div>
+
+                            <div class="progress-step" :class="{ 'active': processingStage >= 2, 'completed': processingStage > 2 }">
+                                <div class="step-icon">
+                                    <span x-show="processingStage > 2">✓</span>
+                                    <span x-show="processingStage <= 2">2</span>
+                                </div>
+                                <div class="step-label">
+                                    Layer 2: Blockchain Settlement
+                                    <span class="help-icon" data-tippy-content="Stellar blockchain settlement in 3-5 seconds. Your permit reference ID is embedded as the transaction memo, creating an immutable record per patent Layer 2 specifications.">?</span>
+                                </div>
+                            </div>
+
+                            <div class="progress-step" :class="{ 'active': processingStage >= 3, 'completed': processingStage > 3 }">
+                                <div class="step-icon">
+                                    <span x-show="processingStage > 3">✓</span>
+                                    <span x-show="processingStage <= 3">3</span>
+                                </div>
+                                <div class="step-label">
+                                    Layer 3: Treasury Posting
+                                    <span class="help-icon" data-tippy-content="Automatic redemption to ACH/wire for government treasury. Cryptographic linking between PYUSD transaction and fiat conversion ensures complete audit trail. Funds arrive next business day.">?</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- QR Code -->
+                    <div class="qr-code-container">
+                        <div id="qrcode"></div>
+                        <p style="margin-top: 16px; font-size: 14px; color: #6C757D;">
+                            Scan with PYUSD wallet or approve in your connected wallet
+                            <span class="help-icon" data-tippy-content="This QR code contains a Stellar payment URI with the destination address, payment amount, and your permit reference ID as the memo. Scan with any PYUSD-compatible wallet to complete payment.">?</span>
+                        </p>
+                        <button @click="simulateWalletApproval" class="btn btn-primary" style="margin-top: 16px;">
+                            Approve in Wallet (Demo)
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: Confirmation -->
+            <div x-show="currentStep === 'confirmation'">
+                <div class="card">
+                    <div class="success-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                    </div>
+
+                    <h2 class="card-title" style="text-align: center;">Payment Successful!</h2>
+                    <p style="text-align: center; color: #6C757D; margin-bottom: 32px;">
+                        Your excise tax payment has been processed using PYUSD
+                    </p>
+
+                    <div class="card" style="background: #F8F9FA;">
+                        <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 16px;">Transaction Details</h3>
+
+                        <div class="summary-row">
+                            <span class="summary-label">Transaction Hash</span>
+                            <span class="summary-value" style="font-family: monospace; font-size: 12px;" x-text="transactionData.txHash"></span>
+                        </div>
+
+                        <div class="summary-row">
+                            <span class="summary-label">Reference ID</span>
+                            <span class="summary-value" x-text="formData.referenceId"></span>
+                        </div>
+
+                        <div class="summary-row">
+                            <span class="summary-label">Amount Paid</span>
+                            <span class="summary-value" x-text="'$' + calculations.totalAmount.toFixed(2)"></span>
+                        </div>
+
+                        <div class="summary-row">
+                            <span class="summary-label">Settlement Time</span>
+                            <span class="summary-value">3.2 seconds</span>
+                        </div>
+
+                        <div class="summary-row">
+                            <span class="summary-label">Estimated Treasury Deposit</span>
+                            <span class="summary-value">Next business day</span>
+                        </div>
+                    </div>
+
+                    <div class="card" style="background: #E7F3FF; border-color: #0070BA;">
+                        <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 16px; color: #0070BA;">Savings Comparison</h3>
+
+                        <div class="summary-row">
+                            <span class="summary-label">PYUSD Transaction Fee</span>
+                            <span class="summary-value" style="color: #28A745;">$0.05</span>
+                        </div>
+
+                        <div class="summary-row">
+                            <span class="summary-label">Traditional Payment Fee</span>
+                            <span class="summary-value" style="text-decoration: line-through; color: #6C757D;">$300.00</span>
+                        </div>
+
+                        <div class="summary-row total" style="color: #28A745; border-color: #28A745;">
+                            <span class="summary-label">You Saved</span>
+                            <span class="summary-value">$299.95</span>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 12px; margin-top: 24px;">
+                        <button @click="downloadReceipt" class="btn btn-primary">
+                            Download Receipt (PDF)
+                        </button>
+                        <button @click="showAuditTrail" class="btn btn-secondary">
+                            View Audit Trail
+                        </button>
+                        <button @click="resetForm" class="btn btn-secondary">
+                            New Payment
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Funding Modal -->
+        <div class="modal" :class="{ 'active': showFundingModal }">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">
+                        Fund Your PYUSD Payment
+                        <span class="help-icon" data-tippy-content="Non-mandatory ACH options. All funding methods preserve the low transaction fee (~$0.001 on Stellar). Choose instant options for immediate settlement or ACH for no additional fees.">?</span>
+                    </h3>
+                    <button class="modal-close" @click="showFundingModal = false">×</button>
+                </div>
+
+                <p style="color: #6C757D; margin-bottom: 24px;">
+                    Select how you'd like to fund your PYUSD payment. All options support the low-fee claim (~$0.001 total).
+                </p>
+
+                <div class="funding-options">
+                    <div class="funding-option" @click="selectFunding('balance')">
+                        <div class="funding-details">
+                            <div class="funding-name">Use PYUSD Balance</div>
+                            <div class="funding-meta">Instant • No fee • Current balance: $2,500.00</div>
+                        </div>
+                        <span class="badge instant">Instant</span>
+                    </div>
+
+                    <div class="funding-option" @click="selectFunding('debit')">
+                        <div class="funding-details">
+                            <div class="funding-name">Debit Card</div>
+                            <div class="funding-meta">Instant • ~1% fee</div>
+                        </div>
+                        <span class="badge instant">Instant</span>
+                    </div>
+
+                    <div class="funding-option" @click="selectFunding('ach')">
+                        <div class="funding-details">
+                            <div class="funding-name">ACH Bank Transfer</div>
+                            <div class="funding-meta">1-3 business days • No fee</div>
+                        </div>
+                    </div>
+
+                    <div class="funding-option" @click="selectFunding('coinbase')">
+                        <div class="funding-details">
+                            <div class="funding-name">Buy PYUSD (Coinbase)</div>
+                            <div class="funding-meta">Instant • No fee for PYUSD</div>
+                        </div>
+                        <span class="badge instant">Instant</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Audit Trail Modal -->
+        <div class="modal" :class="{ 'active': showAuditModal }">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Cryptographic Audit Trail</h3>
+                    <button class="modal-close" @click="showAuditModal = false">×</button>
+                </div>
+
+                <div style="background: #F8F9FA; padding: 16px; border-radius: 6px; font-family: monospace; font-size: 12px; overflow-x: auto;">
+                    <div style="margin-bottom: 12px;">
+                        <strong>PYUSD Transaction:</strong><br>
+                        <span x-text="transactionData.txHash"></span>
+                    </div>
+                    <div style="margin-bottom: 12px;">
+                        <strong>ACH Link ID:</strong><br>
+                        ACH-2025-<span x-text="transactionData.txHash.substring(12, 20)"></span>
+                    </div>
+                    <div>
+                        <strong>Cryptographic Hash:</strong><br>
+                        <span x-text="transactionData.merkleProof"></span>
+                    </div>
+                </div>
+
+                <p style="margin-top: 16px; font-size: 14px; color: #6C757D;">
+                    This cryptographic link ensures immutable audit trail per patent Layer 3 specifications.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function paymentApp() {
+            return {
+                currentStep: 'form',
+                formData: {
+                    baseAmount: 1234.56,
+                    taxType: 'beer',
+                    period: '2025-Q4',
+                    referenceId: 'PERM-98765',
+                    dueDate: 'Dec 31, 2025',
+                    paymentMethod: 'pyusd'
+                },
+                calculations: {
+                    lateFee: 0.00,
+                    portalFee: 0.50,
+                    totalAmount: 1235.06
+                },
+                errors: {},
+                rateLockTimer: 900, // 15 minutes in seconds
+                processingStage: 0,
+                showFundingModal: false,
+                showAuditModal: false,
+                transactionData: {
+                    txHash: '',
+                    merkleProof: ''
+                },
+
+                init() {
+                    this.calculateTotal();
+                    this.calculateDueDate();
+
+                    // Initialize tooltips
+                    this.initTooltips();
+
+                    // Watch for screen changes and re-initialize tooltips
+                    this.$watch('currentStep', () => {
+                        setTimeout(() => this.initTooltips(), 200);
+                    });
+                },
+
+                initTooltips() {
+                    // Destroy existing tooltips first
+                    const existingTooltips = document.querySelectorAll('[data-tippy-content]');
+                    existingTooltips.forEach(el => {
+                        if (el._tippy) {
+                            el._tippy.destroy();
+                        }
+                    });
+
+                    // Initialize all visible tooltips
+                    tippy('[data-tippy-content]', {
+                        theme: 'light-border',
+                        arrow: true,
+                        placement: 'top',
+                        maxWidth: 350
+                    });
+                },
+
+                calculateTotal() {
+                    // Calculate late fee (1.5% per month overdue)
+                    const today = new Date('2025-12-17');
+                    const dueDate = new Date(this.formData.dueDate);
+                    const monthsOverdue = Math.max(0, Math.ceil((today - dueDate) / (1000 * 60 * 60 * 24 * 30)));
+
+                    this.calculations.lateFee = this.formData.baseAmount * 0.015 * monthsOverdue;
+                    this.calculations.totalAmount = this.formData.baseAmount + this.calculations.lateFee + this.calculations.portalFee;
+                },
+
+                calculateDueDate() {
+                    // Auto-set due date to end of period + 30 days
+                    const periodMap = {
+                        '2025-Q4': 'Dec 31, 2025',
+                        '2025-Q3': 'Oct 31, 2025',
+                        '2025-Q2': 'Jul 31, 2025',
+                        '2025-Q1': 'Apr 30, 2025'
+                    };
+                    this.formData.dueDate = periodMap[this.formData.period] || 'Dec 31, 2025';
+                    this.calculateTotal();
+                },
+
+                submitPayment() {
+                    // Validate
+                    this.errors = {};
+                    if (this.formData.baseAmount < 0.01 || this.formData.baseAmount > 1000000) {
+                        this.errors.baseAmount = 'Amount must be between $0.01 and $1,000,000';
+                        return;
+                    }
+
+                    if (this.formData.paymentMethod === 'pyusd') {
+                        this.currentStep = 'processing';
+                        this.startRateLockTimer();
+                        this.generateQRCode();
+                        this.startProcessing();
+                    } else {
+                        alert('ACH payment flow - redirecting to bank form (mock)');
+                    }
+                },
+
+                startRateLockTimer() {
+                    this.rateLockTimer = 900;
+                    const interval = setInterval(() => {
+                        this.rateLockTimer--;
+                        if (this.rateLockTimer <= 0) {
+                            clearInterval(interval);
+                            alert('Rate lock expired. Redirecting to ACH fallback.');
+                        }
+                    }, 1000);
+                },
+
+                formatTime(seconds) {
+                    const mins = Math.floor(seconds / 60);
+                    const secs = seconds % 60;
+                    return `${mins}:${secs.toString().padStart(2, '0')}`;
+                },
+
+                generateQRCode() {
+                    setTimeout(() => {
+                        const qrContainer = document.getElementById('qrcode');
+                        qrContainer.innerHTML = '';
+                        new QRCode(qrContainer, {
+                            text: `stellar:pay?destination=PayPal_Treasury&amount=${this.calculations.totalAmount}&memo=${this.formData.referenceId}`,
+                            width: 200,
+                            height: 200
+                        });
+                    }, 100);
+                },
+
+                startProcessing() {
+                    // Simulate tri-tier processing
+                    setTimeout(() => this.processingStage = 1, 500);   // Layer 1: sub-1s
+                    setTimeout(() => this.processingStage = 2, 1500);  // Layer 2: 3-5s
+                    // Don't auto-complete - wait for wallet approval
+                },
+
+                simulateWalletApproval() {
+                    this.processingStage = 2;
+                    setTimeout(() => {
+                        this.processingStage = 3;
+                        setTimeout(() => {
+                            this.completePayment();
+                        }, 2000);
+                    }, 3200); // 3.2 second settlement
+                },
+
+                completePayment() {
+                    // Generate mock transaction data
+                    this.transactionData.txHash = 'stellar:tx/' + this.generateHash(32);
+                    this.transactionData.merkleProof = '0x' + this.generateHash(64);
+                    this.currentStep = 'confirmation';
+                },
+
+                generateHash(length) {
+                    const chars = '0123456789abcdef';
+                    let hash = '';
+                    for (let i = 0; i < length; i++) {
+                        hash += chars[Math.floor(Math.random() * chars.length)];
+                    }
+                    return hash;
+                },
+
+                selectFunding(method) {
+                    console.log('Selected funding:', method);
+                    this.showFundingModal = false;
+                    alert(`Funding method selected: ${method}. In production, this would update your PYUSD balance.`);
+                },
+
+                downloadReceipt() {
+                    alert('PDF receipt download - In production, this would use jsPDF to generate a downloadable receipt.');
+                },
+
+                showAuditTrail() {
+                    this.showAuditModal = true;
+                },
+
+                resetForm() {
+                    this.currentStep = 'form';
+                    this.processingStage = 0;
+                    this.formData.baseAmount = 1234.56;
+                    this.calculateTotal();
+                }
+            }
+        }
+    </script>
+</body>
+</html>

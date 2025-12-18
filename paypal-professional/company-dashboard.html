@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LCC Company Portal - Manufacturer Reporting</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="company-dashboard.css">
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="login-screen" class="screen active">
+        <div class="login-container">
+            <div class="login-box">
+                <div class="login-header">
+                    <h1>LCC Company Portal</h1>
+                    <p class="subtitle">State Liquor Control Commission</p>
+                    <p class="subtitle-small">Beer, Wine & Spirits Manufacturing Reporting</p>
+                </div>
+
+                <div class="info-banner">
+                    <strong>Secure Portal:</strong> Submit manufacturing reports and track approval status.
+                </div>
+
+                <form id="login-form" class="login-form">
+                    <div class="form-group">
+                        <label for="tax-id">Federal Tax ID</label>
+                        <input type="text" id="tax-id" placeholder="12-3456789" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">LOGIN</button>
+                </form>
+
+                <div class="demo-credentials">
+                    <h4>Demo Account</h4>
+                    <p><strong>Tax ID:</strong> 12-3456789</p>
+                    <p><strong>Password:</strong> demo123</p>
+                </div>
+
+                <div class="login-footer">
+                    <a href="index.html" class="link">← Portal Home</a>
+                    <span style="margin: 0 12px; color: #DEE2E6;">|</span>
+                    <a href="admin-dashboard.html" class="link">Admin Portal</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Dashboard Screen -->
+    <div id="dashboard-screen" class="screen">
+        <!-- Top Navigation -->
+        <nav class="top-nav">
+            <div class="nav-container">
+                <div class="nav-brand">
+                    <h2>LCC Company Portal</h2>
+                </div>
+                <div class="nav-user">
+                    <a href="index.html" class="btn btn-secondary" style="margin-right: 12px;">← HOME</a>
+                    <span id="company-name" class="company-name"></span>
+                    <span id="license-number" class="license-badge"></span>
+                    <button id="logout-btn" class="btn btn-secondary">LOGOUT</button>
+                </div>
+            </div>
+        </nav>
+
+        <div class="main-layout">
+            <!-- Sidebar Navigation -->
+            <aside class="sidebar">
+                <ul class="nav-menu">
+                    <li>
+                        <a href="#" class="nav-link active" data-section="submit-report">
+                            <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
+                            <span>Submit Report</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="nav-link" data-section="my-reports">
+                            <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                            <span>My Reports</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="sidebar-footer">
+                    <a href="admin-dashboard.html" class="nav-link secondary">
+                        <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                        <span>Admin Portal</span>
+                    </a>
+                </div>
+            </aside>
+
+            <!-- Main Content Area -->
+            <main class="content">
+                <!-- Submit Report Section -->
+                <section id="submit-report-section" class="section active">
+                    <div class="section-header">
+                        <h2>Submit Report</h2>
+                        <p class="section-description">Submit your manufacturing reports to LCC</p>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Report Details</h3>
+                        </div>
+                        <div class="card-body">
+                            <form id="report-form">
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label for="report-type">Report Type *</label>
+                                        <select id="report-type" class="form-control" required>
+                                            <option value="">Select Report Type</option>
+                                            <optgroup label="Beer Reports">
+                                                <option value="beer-production">Production Report (Form 35-7136)</option>
+                                                <option value="beer-inventory">Inventory Report (Form 35-7137)</option>
+                                                <option value="beer-sales">Sales Report (Form 35-7138)</option>
+                                                <option value="beer-annual">Annual Summary (Form 35-7127)</option>
+                                            </optgroup>
+                                            <optgroup label="Wine Reports">
+                                                <option value="wine-production">Production Report (Form 35-7131)</option>
+                                                <option value="wine-inventory">Inventory Report (Form 35-7135)</option>
+                                                <option value="wine-sales">Sales Report (Form 35-7142)</option>
+                                                <option value="wine-annual">Annual Summary (Form 35-7130)</option>
+                                            </optgroup>
+                                            <optgroup label="Spirits Reports">
+                                                <option value="spirits-production">Production Report (Form 35-7150)</option>
+                                                <option value="spirits-inventory">Inventory Report (Form 35-7155)</option>
+                                                <option value="spirits-sales">Sales Report (Form 35-7147)</option>
+                                                <option value="spirits-bottling">Bottling Report (Form 35-7153)</option>
+                                                <option value="spirits-annual">Annual Summary (Form 35-7145)</option>
+                                            </optgroup>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="report-period">Reporting Period *</label>
+                                        <input type="month" id="report-period" class="form-control" required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="report-frequency">Frequency *</label>
+                                        <select id="report-frequency" class="form-control" required>
+                                            <option value="monthly">Monthly</option>
+                                            <option value="annual">Annual</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <!-- Dynamic Form Fields -->
+                                <div id="dynamic-fields" class="mt-lg"></div>
+
+                                <div class="form-group mt-lg">
+                                    <label for="report-notes">Notes (Optional)</label>
+                                    <textarea id="report-notes" class="form-control" rows="3" placeholder="Add any additional notes or explanations..."></textarea>
+                                </div>
+
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary">SUBMIT REPORT</button>
+                                    <button type="button" class="btn btn-secondary" onclick="resetForm()">CLEAR FORM</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- My Reports Section -->
+                <section id="my-reports-section" class="section">
+                    <div class="section-header">
+                        <h2>My Reports</h2>
+                        <p class="section-description">Track your submitted reports and their approval status</p>
+                    </div>
+
+                    <!-- Filter Card -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Filters</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="filter-grid">
+                                <div class="form-group">
+                                    <label for="my-filter-type">Report Type</label>
+                                    <select id="my-filter-type" class="form-control">
+                                        <option value="">All Types</option>
+                                        <optgroup label="Beer">
+                                            <option value="beer-production">Production (35-7136)</option>
+                                            <option value="beer-inventory">Inventory (35-7137)</option>
+                                            <option value="beer-sales">Sales (35-7138)</option>
+                                            <option value="beer-annual">Annual (35-7127)</option>
+                                        </optgroup>
+                                        <optgroup label="Wine">
+                                            <option value="wine-production">Production (35-7131)</option>
+                                            <option value="wine-inventory">Inventory (35-7135)</option>
+                                            <option value="wine-sales">Sales (35-7142)</option>
+                                            <option value="wine-annual">Annual (35-7130)</option>
+                                        </optgroup>
+                                        <optgroup label="Spirits">
+                                            <option value="spirits-production">Production (35-7150)</option>
+                                            <option value="spirits-inventory">Inventory (35-7155)</option>
+                                            <option value="spirits-sales">Sales (35-7147)</option>
+                                            <option value="spirits-bottling">Bottling (35-7153)</option>
+                                            <option value="spirits-annual">Annual (35-7145)</option>
+                                        </optgroup>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="my-filter-status">Status</label>
+                                    <select id="my-filter-status" class="form-control">
+                                        <option value="">All Statuses</option>
+                                        <option value="waiting">Waiting for Approval</option>
+                                        <option value="needs-correction">Needs Correction</option>
+                                        <option value="approved">Approved</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Reports Table -->
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Submit Date</th>
+                                            <th>Report Type</th>
+                                            <th>Period</th>
+                                            <th>Status</th>
+                                            <th>Last Update</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="my-reports-tbody">
+                                        <tr>
+                                            <td colspan="6" class="empty-state">No reports found</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- Report Detail Modal -->
+    <div id="report-detail-modal" class="modal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3 id="report-detail-title">Report Details</h3>
+                <button class="modal-close" id="close-report-detail">&times;</button>
+            </div>
+            <div class="modal-body" id="report-detail-body">
+                <!-- Dynamic content loaded here -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="close-detail-btn">CLOSE</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="company-dashboard.js"></script>
+</body>
+</html>

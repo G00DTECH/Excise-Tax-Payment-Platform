@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LCC Admin Portal - State Liquor Control Commission</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="admin-dashboard.css">
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="login-screen" class="screen active">
+        <div class="login-container">
+            <div class="login-box">
+                <div class="login-header">
+                    <h1>LCC Admin Portal</h1>
+                    <p class="subtitle">State Liquor Control Commission</p>
+                    <p class="subtitle-small">Beer, Wine & Spirits Manufacturing Reporting</p>
+                </div>
+
+                <div class="alert alert-info">
+                    <strong>Production Mode:</strong> This page would redirect to State.gov CDB authentication.
+                    <br><strong>Demo Mode:</strong> Use credentials below to login.
+                </div>
+
+                <form id="login-form" class="login-form">
+                    <div class="form-group">
+                        <label for="username">CDB Username</label>
+                        <input type="text" id="username" placeholder="username@state.gov" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-full">Login via State.gov CDB</button>
+                </form>
+
+                <div class="demo-credentials">
+                    <h4>Demo Credentials</h4>
+                    <p><strong>Super Admin:</strong> admin@lcc.state.gov / admin123</p>
+                    <p><strong>Reviewer:</strong> reviewer@lcc.state.gov / review123</p>
+                </div>
+
+                <div class="login-footer" style="margin-top: 20px; text-align: center;">
+                    <a href="index.html" class="link">← Back to Portal Home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Dashboard Screen -->
+    <div id="dashboard-screen" class="screen">
+        <!-- Top Navigation Bar -->
+        <nav class="navbar">
+            <div class="navbar-content">
+                <div class="navbar-brand">
+                    <h2>LCC Admin Portal</h2>
+                </div>
+                <div class="navbar-user">
+                    <a href="index.html" class="btn btn-secondary-outline" style="margin-right: 12px;">← Home</a>
+                    <span id="admin-name" class="admin-name"></span>
+                    <span id="admin-role" class="role-badge"></span>
+                    <button id="logout-btn" class="btn btn-secondary-outline">Logout</button>
+                </div>
+            </div>
+        </nav>
+
+        <div class="main-layout">
+            <!-- Sidebar Navigation -->
+            <aside class="sidebar">
+                <nav class="sidebar-nav">
+                    <a href="#" class="nav-link active" data-section="overview">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="14" width="7" height="7"></rect>
+                            <rect x="3" y="14" width="7" height="7"></rect>
+                        </svg>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="#" class="nav-link" data-section="view-reports">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
+                        </svg>
+                        <span>View Reports</span>
+                    </a>
+                    <a href="#" class="nav-link" data-section="report-review">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                        <span>Report Review</span>
+                    </a>
+                    <a href="#" class="nav-link" data-section="setup-sizes">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                        </svg>
+                        <span>Setup Sizes</span>
+                    </a>
+                    <a href="#" class="nav-link" data-section="winery-settings">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path d="M12 1v6m0 6v6"></path>
+                            <path d="m4.2 4.2 4.2 4.2m5.6 5.6 4.2 4.2"></path>
+                            <path d="M1 12h6m6 0h6"></path>
+                            <path d="m4.2 19.8 4.2-4.2m5.6-5.6 4.2-4.2"></path>
+                        </svg>
+                        <span>Winery Settings</span>
+                    </a>
+                    <a href="#" class="nav-link" data-section="notifications">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                        </svg>
+                        <span>Notifications</span>
+                    </a>
+                </nav>
+
+                <div class="sidebar-footer">
+                    <a href="company-dashboard.html" class="nav-link nav-link-secondary">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 12H5M12 19l-7-7 7-7"></path>
+                        </svg>
+                        <span>Company Portal</span>
+                    </a>
+                </div>
+            </aside>
+
+            <!-- Main Content Area -->
+            <main class="content">
+                <!-- Dashboard Overview Section -->
+                <section id="overview-section" class="section active">
+                    <div class="section-header">
+                        <h2>Admin Dashboard</h2>
+                        <p class="description">Monitor and manage manufacturer excise tax reports</p>
+                    </div>
+
+                    <!-- Statistics Cards -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <h3>Waiting for Approval</h3>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0070BA" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                </svg>
+                            </div>
+                            <div class="stat-value" id="stat-waiting">0</div>
+                            <div class="stat-label">Reports pending review</div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <h3>Needs Correction</h3>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FFC107" stroke-width="2">
+                                    <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path>
+                                    <line x1="12" y1="9" x2="12" y2="13"></line>
+                                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                                </svg>
+                            </div>
+                            <div class="stat-value stat-warning" id="stat-correction">0</div>
+                            <div class="stat-label">Reports requiring changes</div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <h3>Approved This Month</h3>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#28A745" stroke-width="2">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                </svg>
+                            </div>
+                            <div class="stat-value stat-success" id="stat-approved">0</div>
+                            <div class="stat-label">Successfully processed</div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-header">
+                                <h3>Total This Year</h3>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#003087" stroke-width="2">
+                                    <line x1="12" y1="1" x2="12" y2="23"></line>
+                                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                                </svg>
+                            </div>
+                            <div class="stat-value" id="stat-year-total">0</div>
+                            <div class="stat-label">Reports in <span id="current-year">2025</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Reports -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Recent Reports</h3>
+                        </div>
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Manufacturer</th>
+                                        <th>Type</th>
+                                        <th>Period</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="recent-reports-tbody">
+                                    <tr>
+                                        <td colspan="6" class="empty-state">No recent reports</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- System Alerts -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>System Alerts</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="alert alert-info">
+                                <strong>System Status:</strong> All systems operational
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- View Reports Section -->
+                <section id="view-reports-section" class="section">
+                    <div class="section-header">
+                        <h2>View Reports</h2>
+                        <p class="description">Search and filter manufacturer excise tax reports</p>
+                    </div>
+
+                    <!-- Filters -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Filters</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="filter-grid">
+                                <div class="form-group">
+                                    <label for="filter-frequency">Report Frequency</label>
+                                    <select id="filter-frequency">
+                                        <option value="">All Frequencies</option>
+                                        <option value="monthly">Monthly</option>
+                                        <option value="annual">Annual</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="filter-type">Report Type</label>
+                                    <select id="filter-type">
+                                        <option value="">All Types</option>
+                                        <optgroup label="Beer">
+                                            <option value="beer-production">Production (35-7136)</option>
+                                            <option value="beer-inventory">Inventory (35-7137)</option>
+                                            <option value="beer-sales">Sales (35-7138)</option>
+                                            <option value="beer-annual">Annual Summary (35-7127)</option>
+                                        </optgroup>
+                                        <optgroup label="Wine">
+                                            <option value="wine-production">Production (35-7131)</option>
+                                            <option value="wine-inventory">Inventory (35-7135)</option>
+                                            <option value="wine-sales">Sales (35-7142)</option>
+                                            <option value="wine-annual">Annual Summary (35-7130)</option>
+                                        </optgroup>
+                                        <optgroup label="Spirits">
+                                            <option value="spirits-production">Production (35-7150)</option>
+                                            <option value="spirits-inventory">Inventory (35-7155)</option>
+                                            <option value="spirits-sales">Sales (35-7147)</option>
+                                            <option value="spirits-bottling">Bottling (35-7153)</option>
+                                            <option value="spirits-annual">Annual Summary (35-7145)</option>
+                                        </optgroup>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="filter-status">Status</label>
+                                    <select id="filter-status">
+                                        <option value="">All Statuses</option>
+                                        <option value="waiting">Waiting for Approval</option>
+                                        <option value="needs-correction">Needs Correction</option>
+                                        <option value="approved">Approved</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="filter-date-from">From Date</label>
+                                    <input type="date" id="filter-date-from">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="filter-date-to">To Date</label>
+                                    <input type="date" id="filter-date-to">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="filter-manufacturer">Manufacturer</label>
+                                    <input type="text" id="filter-manufacturer" placeholder="Search by name or license...">
+                                </div>
+                            </div>
+
+                            <div class="filter-actions">
+                                <button id="clear-filters-btn" class="btn btn-secondary-outline">Clear Filters</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Reports Table -->
+                    <div class="card">
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th class="sortable" data-sort="submitDate">Submit Date</th>
+                                        <th class="sortable" data-sort="manufacturer">Manufacturer</th>
+                                        <th class="sortable" data-sort="type">Report Type</th>
+                                        <th class="sortable" data-sort="period">Period</th>
+                                        <th class="sortable" data-sort="frequency">Frequency</th>
+                                        <th class="sortable" data-sort="status">Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="reports-tbody">
+                                    <tr>
+                                        <td colspan="7" class="empty-state">No reports match the current filters</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Report Review Section -->
+                <section id="report-review-section" class="section">
+                    <div class="section-header">
+                        <h2>Report Review</h2>
+                        <p class="description">Review and approve/reject manufacturer reports</p>
+                    </div>
+
+                    <div id="report-detail-container">
+                        <div class="empty-state-large">
+                            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#6C757D" stroke-width="1.5">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                            </svg>
+                            <h3>No Report Selected</h3>
+                            <p>Select a report from the View Reports page to review</p>
+                            <button id="go-to-reports-btn" class="btn btn-primary">Go to View Reports</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Setup Sizes Section -->
+                <section id="setup-sizes-section" class="section">
+                    <div class="section-header">
+                        <h2>Setup Sizes</h2>
+                        <p class="description">Manage product sizes for barrels, bottles, and cases</p>
+                    </div>
+
+                    <!-- Barrels -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Barrels</h3>
+                            <button class="btn btn-primary" data-size-type="barrel">Add Barrel Size</button>
+                        </div>
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Size Name</th>
+                                        <th>Gallons</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="barrels-tbody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Bottles -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Bottles</h3>
+                            <button class="btn btn-primary" data-size-type="bottle">Add Bottle Size</button>
+                        </div>
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Size Name</th>
+                                        <th>Gallons</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="bottles-tbody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Cases -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Cases</h3>
+                            <button class="btn btn-primary" data-size-type="case">Add Case Size</button>
+                        </div>
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Size Name</th>
+                                        <th>Gallons</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="cases-tbody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Winery Settings Section -->
+                <section id="winery-settings-section" class="section">
+                    <div class="section-header">
+                        <h2>Winery Reporting Settings</h2>
+                        <p class="description">Configure whether wineries report monthly or annually</p>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Search Wineries</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="winery-search">Search by name or license</label>
+                                <input type="text" id="winery-search" placeholder="Search wineries...">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Winery Name</th>
+                                        <th>License Number</th>
+                                        <th>Current Setting</th>
+                                        <th>Last Updated</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="wineries-tbody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Notifications Section -->
+                <section id="notifications-section" class="section">
+                    <div class="section-header">
+                        <h2>Email Notifications</h2>
+                        <p class="description">View notification history and email templates</p>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Filters</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="filter-grid" style="grid-template-columns: repeat(2, 1fr);">
+                                <div class="form-group">
+                                    <label for="notif-type">Type</label>
+                                    <select id="notif-type">
+                                        <option value="">All Types</option>
+                                        <option value="approved">Approval</option>
+                                        <option value="needs-correction">Needs Correction</option>
+                                        <option value="reminder">Reminder</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="notif-date">Date Range</label>
+                                    <select id="notif-date">
+                                        <option value="7">Last 7 days</option>
+                                        <option value="30">Last 30 days</option>
+                                        <option value="90">Last 90 days</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Recent Notifications</h3>
+                        </div>
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Date Sent</th>
+                                        <th>Recipient</th>
+                                        <th>Type</th>
+                                        <th>Report ID</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="notifications-tbody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Email Templates</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="alert alert-info">
+                                Email templates are configured in the system settings. Templates include:
+                                <ul>
+                                    <li>Report Approved</li>
+                                    <li>Report Needs Correction</li>
+                                    <li>Monthly Reminder</li>
+                                    <li>Annual Reminder</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- Size Modal -->
+    <div id="size-modal" class="modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="size-modal-title">Add Size</h3>
+                <button class="modal-close" id="close-size-modal">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <form id="size-form" class="modal-body">
+                <input type="hidden" id="size-id">
+                <input type="hidden" id="size-category">
+
+                <div class="form-group">
+                    <label for="size-name">Size Name</label>
+                    <input type="text" id="size-name" required placeholder="e.g., 750ml, 5 Gallon, 12-pack">
+                </div>
+
+                <div class="form-group">
+                    <label for="size-gallons">Gallons</label>
+                    <input type="number" id="size-gallons" step="0.001" required placeholder="e.g., 0.198">
+                </div>
+
+                <div class="form-group">
+                    <label for="size-status">Status</label>
+                    <select id="size-status" required>
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                    </select>
+                </div>
+            </form>
+            <div class="modal-footer">
+                <button class="btn btn-secondary-outline" id="cancel-size-btn">Cancel</button>
+                <button type="submit" form="size-form" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Winery Settings Modal -->
+    <div id="winery-modal" class="modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Update Winery Reporting Frequency</h3>
+                <button class="modal-close" id="close-winery-modal">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <form id="winery-form" class="modal-body">
+                <input type="hidden" id="winery-id">
+
+                <div class="form-group">
+                    <label>Winery Name</label>
+                    <p id="winery-name-display" class="form-value"></p>
+                </div>
+
+                <div class="form-group">
+                    <label for="winery-frequency">Reporting Frequency</label>
+                    <select id="winery-frequency" required>
+                        <option value="monthly">Monthly</option>
+                        <option value="annual">Annual</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="winery-notes">Notes (optional)</label>
+                    <textarea id="winery-notes" rows="3" placeholder="Reason for change..."></textarea>
+                </div>
+            </form>
+            <div class="modal-footer">
+                <button class="btn btn-secondary-outline" id="cancel-winery-btn">Cancel</button>
+                <button type="submit" form="winery-form" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="admin-dashboard.js"></script>
+</body>
+</html>

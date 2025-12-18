@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>State Excise Tax Portal - Home</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #F8F9FA;
+            color: #333333;
+            line-height: 1.5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: #003087;
+            color: white;
+            padding: 24px 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+            font-weight: 400;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 48px 24px;
+            flex: 1;
+        }
+
+        .intro-section {
+            background: white;
+            padding: 32px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 48px;
+            border: 1px solid #DEE2E6;
+        }
+
+        .intro-section h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #003087;
+            margin-bottom: 16px;
+        }
+
+        .intro-section p {
+            font-size: 16px;
+            color: #6C757D;
+            line-height: 1.6;
+        }
+
+        .demo-credentials {
+            background: #FFF9E6;
+            border: 1px solid #FFE07F;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 32px;
+        }
+
+        .demo-credentials h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #856404;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .credentials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+        }
+
+        .credential-item {
+            background: white;
+            padding: 16px;
+            border-radius: 6px;
+            border: 1px solid #FFE07F;
+        }
+
+        .credential-item h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #003087;
+            margin-bottom: 8px;
+        }
+
+        .credential-item p {
+            font-size: 14px;
+            color: #6C757D;
+            margin: 4px 0;
+        }
+
+        .credential-item strong {
+            color: #333333;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #003087;
+            margin-bottom: 24px;
+        }
+
+        .portals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+
+        .portal-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border: 1px solid #DEE2E6;
+            overflow: hidden;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .portal-card:hover {
+            box-shadow: 0 4px 12px rgba(0, 48, 135, 0.15);
+            transform: translateY(-1px);
+        }
+
+        .portal-header {
+            padding: 24px;
+            background: #003087;
+            color: white;
+        }
+
+        .portal-icon {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 12px;
+        }
+
+        .portal-icon svg {
+            width: 100%;
+            height: 100%;
+            fill: currentColor;
+        }
+
+        .portal-header h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .portal-header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .portal-body {
+            padding: 24px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .portal-body ul {
+            list-style: none;
+            margin: 0 0 24px 0;
+            flex: 1;
+        }
+
+        .portal-body li {
+            padding: 8px 0;
+            font-size: 14px;
+            color: #6C757D;
+            border-bottom: 1px solid #F1F3F4;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .portal-body li:last-child {
+            border-bottom: none;
+        }
+
+        .portal-body li svg {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+            fill: #28A745;
+            margin-top: 2px;
+        }
+
+        .portal-link {
+            display: block;
+            background: #0070BA;
+            color: white;
+            text-align: center;
+            padding: 12px 24px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .portal-link:hover {
+            background: #005ea6;
+            transform: translateY(-1px);
+        }
+
+        .features-section {
+            background: white;
+            padding: 32px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border: 1px solid #DEE2E6;
+            margin-bottom: 32px;
+        }
+
+        .features-section h3 {
+            font-size: 20px;
+            font-weight: 700;
+            color: #003087;
+            margin-bottom: 24px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+        }
+
+        .feature-item {
+            padding: 16px;
+            border-left: 3px solid #0070BA;
+            background: #F8F9FA;
+            border-radius: 4px;
+        }
+
+        .feature-item h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333333;
+            margin-bottom: 8px;
+        }
+
+        .feature-item p {
+            font-size: 14px;
+            color: #6C757D;
+        }
+
+        .footer {
+            background: #333333;
+            color: white;
+            padding: 24px 0;
+            margin-top: auto;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            text-align: center;
+        }
+
+        .footer p {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .icon {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        @media (max-width: 768px) {
+            .portals-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .container {
+                padding: 32px 16px;
+            }
+
+            .section-title {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <h1>State Excise Tax Portal</h1>
+            <p>Professional payment and reporting system</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="intro-section">
+            <h2>Welcome to the State Excise Tax Portal</h2>
+            <p>
+                This professional portal system provides comprehensive solutions for excise tax payments and manufacturing reporting.
+                Built with PayPal's trusted design language, this platform offers three specialized portals to meet your needs.
+            </p>
+            <div style="background: #E7F3FF; padding: 16px; border-radius: 6px; margin-top: 16px; border-left: 4px solid #0070BA;">
+                <p style="margin: 0; font-size: 14px; color: #0070BA;">
+                    <strong>NEW:</strong> Interactive v2.1 Payment Portal now available with real-time calculations, tri-tier processing animation, patent tooltips, and live QR code generation.
+                </p>
+            </div>
+        </div>
+
+        <div class="demo-credentials">
+            <h3>
+                <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+                Demo credentials
+            </h3>
+            <div class="credentials-grid">
+                <div class="credential-item">
+                    <h4>Admin Portal</h4>
+                    <p><strong>Email:</strong> admin@lcc.state.gov</p>
+                    <p><strong>Password:</strong> admin123</p>
+                    <p><strong>Role:</strong> Super Admin</p>
+                </div>
+                <div class="credential-item">
+                    <h4>Company Portal</h4>
+                    <p><strong>Tax ID:</strong> 12-3456789</p>
+                    <p><strong>Password:</strong> demo123</p>
+                    <p><strong>Company:</strong> Pacific Distillery Co.</p>
+                </div>
+                <div class="credential-item">
+                    <h4>Payment Portal</h4>
+                    <p><strong>Note:</strong> No login required</p>
+                    <p><strong>Amount:</strong> $12,450.00 (pre-filled)</p>
+                    <p><strong>Feature:</strong> PYUSD payment demo</p>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title">Select a portal</h2>
+
+        <div class="portals-grid">
+            <!-- Payment Portal -->
+            <div class="portal-card">
+                <div class="portal-header">
+                    <div class="portal-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                            <rect x="2" y="5" width="20" height="14" rx="2"/>
+                            <path d="M2 10h20" stroke="#003087" stroke-width="1.5"/>
+                        </svg>
+                    </div>
+                    <h3>Payment Portal</h3>
+                    <p>PYUSD payment integration</p>
+                </div>
+                <div class="portal-body">
+                    <ul>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            Pay excise taxes with PYUSD
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            Instant settlement (3.2 seconds)
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            Real-time calculations & validation
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            Tri-tier processing animation
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            Patent tooltips & QR code
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            Save $299.95 vs traditional
+                        </li>
+                    </ul>
+                    <div style="background: #E7F3FF; padding: 12px; border-radius: 6px; margin-bottom: 16px; border: 1px solid #0070BA;">
+                        <p style="font-size: 12px; color: #0070BA; margin: 0; font-weight: 600;">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 14px; height: 14px; display: inline; margin-right: 4px;">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="8" x2="12" y2="12"></line>
+                                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                            </svg>
+                            v2.1 Interactive Demo - Full form validation, auto-calculations, live QR codes
+                        </p>
+                    </div>
+                    <a href="pyusd-payment-interactive.html" class="portal-link">Access Interactive Portal (v2.1)</a>
+                    <a href="pyusd-payment-professional.html" class="portal-link" style="background: white; color: #0070BA; border: 2px solid #0070BA; margin-top: 8px;">
+                        Static Demo (Original)
+                    </a>
+                </div>
+            </div>
+
+            <!-- Admin Portal -->
+            <div class="portal-card">
+                <div class="portal-header">
+                    <div class="portal-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 1L3 5v6c0 5.5 3.8 10.7 9 12 5.2-1.3 9-6.5 9-12V5l-9-4z"/>
+                            <path d="M9 12l2 2 4-4" stroke="#003087" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3>Admin Portal</h3>
+                    <p>LCC staff dashboard</p>
+                </div>
+                <div class="portal-body">
+                    <ul>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            Review manufacturer reports
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            Approve/reject submissions
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            Manage 13 report types
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            Configure product sizes
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            Winery settings management
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            Complete audit trails
+                        </li>
+                    </ul>
+                    <a href="admin-dashboard.html" class="portal-link">Access Admin Portal</a>
+                </div>
+            </div>
+
+            <!-- Company Portal -->
+            <div class="portal-card">
+                <div class="portal-header">
+                    <div class="portal-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                            <rect x="3" y="3" width="7" height="7"/>
+                            <rect x="3" y="13" width="7" height="8"/>
+                            <rect x="13" y="3" width="8" height="18"/>
+                        </svg>
+                    </div>
+                    <h3>Company Portal</h3>
+                    <p>Manufacturer dashboard</p>
+                </div>
+                <div class="portal-body">
+                    <ul>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            Submit excise tax reports
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            13 report types available
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            Track submission status
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            View LCC comments
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            Beer, wine & spirits forms
+                        </li>
+                        <li>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            Monthly & annual reporting
+                        </li>
+                    </ul>
+                    <a href="company-dashboard.html" class="portal-link">Access Company Portal</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="features-section">
+            <h3>Platform features</h3>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <h4>PayPal professional design</h4>
+                    <p>Clean, trustworthy interface using PayPal's design language with #003087 blue and white backgrounds.</p>
+                </div>
+                <div class="feature-item">
+                    <h4>Complete workflow</h4>
+                    <p>Full submission to approval workflow with comments, corrections, and audit trails.</p>
+                </div>
+                <div class="feature-item">
+                    <h4>13 report types</h4>
+                    <p>Support for beer (4), wine (4), and spirits (5) production, inventory, sales, and annual reports.</p>
+                </div>
+                <div class="feature-item">
+                    <h4>WCAG 2.1 AA accessible</h4>
+                    <p>Fully accessible design with proper contrast ratios, keyboard navigation, and screen reader support.</p>
+                </div>
+                <div class="feature-item">
+                    <h4>Mobile responsive</h4>
+                    <p>Works seamlessly on desktop, tablet, and mobile devices with touch-friendly interfaces.</p>
+                </div>
+                <div class="feature-item">
+                    <h4>Production ready</h4>
+                    <p>Complete with demo data, documentation, and ready for backend API integration.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2025 State Excise Tax Portal</p>
+            <p style="margin-top: 8px; font-size: 12px;">
+                Built with PayPal's trusted design language
+            </p>
+        </div>
+    </footer>
+</body>
+</html>
